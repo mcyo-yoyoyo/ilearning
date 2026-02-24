@@ -822,6 +822,21 @@
                 padding: 15px;
             }
         }
+        
+        /* 加载动画 */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -833,7 +848,7 @@
                 <span>趣学英语</span>
             </div>
             <div class="user-profile">
-                <span>小朋友</span>
+                <span>Mcyo</span>
                 <div class="avatar">K</div>
             </div>
         </div>
@@ -1036,16 +1051,16 @@
                 </div>
                 
                 <div class="player-controls">
-                    <button class="control-btn secondary" onclick="togglePlay()">
+                    <button class="control-btn secondary" id="play-pause-btn">
                         <i class="fas fa-play"></i> 播放/暂停
                     </button>
-                    <button class="control-btn" onclick="repeatLine()">
+                    <button class="control-btn" id="repeat-btn">
                         <i class="fas fa-redo"></i> 复读
                     </button>
-                    <button class="control-btn success" onclick="startRecording()">
+                    <button class="control-btn success" id="record-btn">
                         <i class="fas fa-microphone"></i> 跟读配音
                     </button>
-                    <button class="control-btn warning" onclick="showDefinition()">
+                    <button class="control-btn warning" id="translate-btn">
                         <i class="fas fa-search"></i> 查词
                     </button>
                     <div class="speed-control">
@@ -1073,7 +1088,7 @@
                             <div class="meaning">n. 冒险；奇遇</div>
                         </div>
                         <div class="word-actions">
-                            <button class="word-btn play" title="发音">
+                            <button class="word-btn play" title="发音" data-word="Adventure">
                                 <i class="fas fa-volume-up"></i>
                             </button>
                             <button class="word-btn favorite" title="收藏">
@@ -1089,7 +1104,7 @@
                             <div class="meaning">n. 蝴蝶</div>
                         </div>
                         <div class="word-actions">
-                            <button class="word-btn play" title="发音">
+                            <button class="word-btn play" title="发音" data-word="Butterfly">
                                 <i class="fas fa-volume-up"></i>
                             </button>
                             <button class="word-btn favorite active" title="已收藏">
@@ -1105,7 +1120,7 @@
                             <div class="meaning">adj. 好奇的；奇特的</div>
                         </div>
                         <div class="word-actions">
-                            <button class="word-btn play" title="发音">
+                            <button class="word-btn play" title="发音" data-word="Curious">
                                 <i class="fas fa-volume-up"></i>
                             </button>
                             <button class="word-btn favorite" title="收藏">
@@ -1121,7 +1136,7 @@
                             <div class="meaning">v. 发现；发觉</div>
                         </div>
                         <div class="word-actions">
-                            <button class="word-btn play" title="发音">
+                            <button class="word-btn play" title="发音" data-word="Discover">
                                 <i class="fas fa-volume-up"></i>
                             </button>
                             <button class="word-btn favorite" title="收藏">
@@ -1137,7 +1152,7 @@
                             <div class="meaning">adj. 令人兴奋的；刺激的</div>
                         </div>
                         <div class="word-actions">
-                            <button class="word-btn play" title="发音">
+                            <button class="word-btn play" title="发音" data-word="Exciting">
                                 <i class="fas fa-volume-up"></i>
                             </button>
                             <button class="word-btn favorite" title="收藏">
@@ -1153,7 +1168,7 @@
                             <div class="meaning">n. 友谊；友情</div>
                         </div>
                         <div class="word-actions">
-                            <button class="word-btn play" title="发音">
+                            <button class="word-btn play" title="发音" data-word="Friendship">
                                 <i class="fas fa-volume-up"></i>
                             </button>
                             <button class="word-btn favorite active" title="已收藏">
@@ -1180,7 +1195,7 @@
                             <div class="meaning">n. 蝴蝶</div>
                         </div>
                         <div class="word-actions">
-                            <button class="word-btn play" title="发音">
+                            <button class="word-btn play" title="发音" data-word="Butterfly">
                                 <i class="fas fa-volume-up"></i>
                             </button>
                             <button class="word-btn favorite active" title="已收藏">
@@ -1196,7 +1211,7 @@
                             <div class="meaning">n. 友谊；友情</div>
                         </div>
                         <div class="word-actions">
-                            <button class="word-btn play" title="发音">
+                            <button class="word-btn play" title="发音" data-word="Friendship">
                                 <i class="fas fa-volume-up"></i>
                             </button>
                             <button class="word-btn favorite active" title="已收藏">
@@ -1212,7 +1227,7 @@
                             <div class="meaning">n. 想象力；空想</div>
                         </div>
                         <div class="word-actions">
-                            <button class="word-btn play" title="发音">
+                            <button class="word-btn play" title="发音" data-word="Imagination">
                                 <i class="fas fa-volume-up"></i>
                             </button>
                             <button class="word-btn favorite active" title="已收藏">
@@ -1228,7 +1243,7 @@
                             <div class="meaning">n. 旅行；旅程</div>
                         </div>
                         <div class="word-actions">
-                            <button class="word-btn play" title="发音">
+                            <button class="word-btn play" title="发音" data-word="Journey">
                                 <i class="fas fa-volume-up"></i>
                             </button>
                             <button class="word-btn favorite active" title="已收藏">
@@ -1399,6 +1414,21 @@
     </div>
 
     <script>
+        // 初始化Web Speech API
+        let recognition;
+        let speechSynthesis = window.speechSynthesis;
+        
+        // 初始化语音识别
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+        } else {
+            console.log('浏览器不支持语音识别');
+        }
+        
         // 作为新东方资深英语教师和产品经理，我设计了以下功能实现
         document.addEventListener('DOMContentLoaded', function() {
             // Tab切换功能
@@ -1460,42 +1490,121 @@
                     // 添加当前行的active类
                     line.classList.add('active');
                     
-                    // 模拟发音
-                    const audioId = line.getAttribute('data-audio');
-                    showNotification(`正在播放: ${audioId}`);
+                    // 播放当前句子
+                    const text = line.querySelector('span').textContent.replace(/^[^:]+:\s*/, '');
+                    speakText(text);
                 });
             });
             
             // 播放/暂停功能
+            document.getElementById('play-pause-btn').addEventListener('click', function() {
+                togglePlay();
+            });
+            
             window.togglePlay = function() {
-                showNotification('播放/暂停视频');
+                const icon = document.querySelector('#play-pause-btn i');
+                const activeLine = document.querySelector('.transcript-line.active');
+                
+                if (icon.classList.contains('fa-play')) {
+                    icon.classList.remove('fa-play');
+                    icon.classList.add('fa-pause');
+                    if (activeLine) {
+                        const text = activeLine.querySelector('span').textContent.replace(/^[^:]+:\s*/, '');
+                        speakText(text);
+                    } else {
+                        // 播放第一个句子
+                        const firstLine = document.querySelector('.transcript-line');
+                        if (firstLine) {
+                            firstLine.classList.add('active');
+                            const text = firstLine.querySelector('span').textContent.replace(/^[^:]+:\s*/, '');
+                            speakText(text);
+                        }
+                    }
+                } else {
+                    icon.classList.remove('fa-pause');
+                    icon.classList.add('fa-play');
+                    speechSynthesis.cancel();
+                }
             }
             
             // 复读功能
+            document.getElementById('repeat-btn').addEventListener('click', function() {
+                repeatLine();
+            });
+            
             window.repeatLine = function() {
                 const activeLine = document.querySelector('.transcript-line.active');
                 if(activeLine) {
-                    const audioId = activeLine.getAttribute('data-audio');
-                    showNotification(`正在复读: ${audioId}`);
+                    const text = activeLine.querySelector('span').textContent.replace(/^[^:]+:\s*/, '');
+                    speakText(text);
                 } else {
                     showNotification('请先选择要复读的句子');
                 }
             }
             
             // 跟读配音功能
+            document.getElementById('record-btn').addEventListener('click', function() {
+                startRecording();
+            });
+            
             window.startRecording = function() {
+                if (!recognition) {
+                    showNotification('您的浏览器不支持语音识别');
+                    return;
+                }
+                
                 showNotification('开始录音... 请跟读选中的句子');
                 
-                // 3秒后模拟AI评分
-                setTimeout(() => {
+                const activeLine = document.querySelector('.transcript-line.active');
+                if (!activeLine) {
+                    showNotification('请先选择一句台词');
+                    return;
+                }
+                
+                const expectedText = activeLine.querySelector('span').textContent.replace(/^[^:]+:\s*/, '');
+                
+                recognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript;
+                    showNotification(`您说: ${transcript}`);
+                    
+                    // 简单的相似度比较（实际应用中可以使用更复杂的算法）
+                    const similarity = calculateSimilarity(transcript.toLowerCase(), expectedText.toLowerCase());
+                    const score = Math.round(similarity * 100);
+                    
+                    // 显示评分结果
+                    document.getElementById('score-value').textContent = score;
+                    updateScoreFeedback(score, transcript, expectedText);
+                    
                     document.getElementById('overlay').classList.add('active');
                     document.getElementById('ai-score-modal').classList.add('active');
-                }, 3000);
+                };
+                
+                recognition.onerror = function(event) {
+                    showNotification('录音出错: ' + event.error);
+                };
+                
+                recognition.start();
             }
             
             // 查词功能
+            document.getElementById('translate-btn').addEventListener('click', function() {
+                const activeLine = document.querySelector('.transcript-line.active');
+                if (activeLine) {
+                    const text = activeLine.querySelector('span').textContent.replace(/^[^:]+:\s*/, '');
+                    translateText(text);
+                } else {
+                    showNotification('请先选择一句话');
+                }
+            });
+            
             window.showDefinition = function() {
-                showNotification('点击句子中的单词可查看释义');
+                const activeLine = document.querySelector('.transcript-line.active');
+                if (activeLine) {
+                    const text = activeLine.querySelector('span').textContent.replace(/^[^:]+:\s*/, '');
+                    translateText(text);
+                } else {
+                    showNotification('请先选择一句话');
+                }
             }
             
             // 隐藏/显示译文
@@ -1510,7 +1619,8 @@
             
             // 速度控制
             document.getElementById('speed-control').addEventListener('input', function() {
-                const speed = this.value;
+                const speed = parseFloat(this.value);
+                speechSynthesis.rate = speed;
                 showNotification(`播放速度已设置为 ${speed}x`);
             });
             
@@ -1520,7 +1630,8 @@
                 button.addEventListener('click', function() {
                     this.classList.toggle('active');
                     const isFavorite = this.classList.contains('active');
-                    showNotification(isFavorite ? '已添加到生词本' : '已从生词本移除');
+                    const word = this.closest('.word-card').querySelector('.word').textContent;
+                    showNotification(isFavorite ? `已添加 "${word}" 到生词本` : `已从生词本移除 "${word}"`);
                 });
             });
             
@@ -1528,8 +1639,8 @@
             const playButtons = document.querySelectorAll('.word-btn.play');
             playButtons.forEach(button => {
                 button.addEventListener('click', function() {
-                    const word = this.closest('.word-card').querySelector('.word').textContent;
-                    showNotification(`正在发音: ${word}`);
+                    const word = this.getAttribute('data-word');
+                    speakText(word);
                 });
             });
             
@@ -1613,6 +1724,101 @@
                 showNotification('新东方教育理念：在趣味中学习，在情境中掌握！');
             }, 2000);
         });
+        
+        // 语音合成函数
+        function speakText(text) {
+            if (speechSynthesis.speaking) {
+                speechSynthesis.cancel();
+            }
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 1;
+            utterance.pitch = 1;
+            utterance.volume = 1;
+            utterance.lang = 'en-US';
+            
+            speechSynthesis.speak(utterance);
+        }
+        
+        // 文本翻译函数（使用免费API）
+        async function translateText(text) {
+            try {
+                showNotification('正在翻译...');
+                
+                // 使用免费的翻译API
+                const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|zh`);
+                const data = await response.json();
+                
+                if (data.responseStatus === 200) {
+                    showNotification(`翻译结果: ${data.responseData.translatedText}`);
+                } else {
+                    showNotification('翻译失败，请稍后重试');
+                }
+            } catch (error) {
+                console.error('翻译错误:', error);
+                showNotification('翻译服务暂时不可用');
+            }
+        }
+        
+        // 计算字符串相似度
+        function calculateSimilarity(str1, str2) {
+            const longer = str1.length > str2.length ? str1 : str2;
+            const shorter = str1.length > str2.length ? str2 : str1;
+            
+            if (longer.length === 0) {
+                return 1.0;
+            }
+            
+            const editDistance = computeEditDistance(longer, shorter);
+            return (longer.length - editDistance) / longer.length;
+        }
+        
+        // 编辑距离算法
+        function computeEditDistance(s1, s2) {
+            s1 = s1.toLowerCase();
+            s2 = s2.toLowerCase();
+            
+            const costs = [];
+            for (let i = 0; i <= s1.length; i++) {
+                let lastValue = i;
+                for (let j = 0; j <= s2.length; j++) {
+                    if (i === 0) {
+                        costs[j] = j;
+                    } else if (j > 0) {
+                        let newValue = costs[j - 1];
+                        if (s1.charAt(i - 1) !== s2.charAt(j - 1)) {
+                            newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
+                        }
+                        costs[j - 1] = lastValue;
+                        lastValue = newValue;
+                    }
+                }
+                if (i > 0) {
+                    costs[s2.length] = lastValue;
+                }
+            }
+            return costs[s2.length];
+        }
+        
+        // 更新评分反馈
+        function updateScoreFeedback(score, userText, expectedText) {
+            let feedback = '';
+            
+            if (score >= 90) {
+                feedback = `发音非常标准！您说："${userText}"，系统检测到与 "${expectedText}" 相似度很高。`;
+            } else if (score >= 70) {
+                feedback = `发音不错！您说："${userText}"，继续练习会更好。`;
+            } else if (score >= 50) {
+                feedback = `还需要多练习哦。您说："${userText}"，可以再试试。`;
+            } else {
+                feedback = `发音需要加强。您说："${userText}"，建议多听几遍原音再模仿。`;
+            }
+            
+            document.querySelector('.score-feedback').innerHTML = `
+                <i class="fas fa-comment" style="color: var(--secondary-color); margin-right: 5px;"></i>
+                ${feedback}
+            `;
+        }
     </script>
 </body>
 </html>
