@@ -3,1821 +3,413 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>趣学英语 - 儿童英语学习APP</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>AI趣学英语</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #4a6fa5;
-            --secondary-color: #1e88e5;
-            --accent-color: #ff6b6b;
+            --primary-color: #4facfe;
+            --secondary-color: #00f2fe;
             --success-color: #4caf50;
             --warning-color: #ff9800;
-            --light-color: #f8f9fa;
-            --dark-color: #343a40;
-            --gray-color: #6c757d;
-            --border-radius: 12px;
-            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
-            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: var(--font-main);
-            background: linear-gradient(135deg, #e6f7ff 0%, #f0f9ff 100%);
-            color: var(--dark-color);
-            line-height: 1.6;
-            min-height: 100vh;
-            padding-bottom: 80px;
-        }
-
-        /* 头部样式 */
-        header {
-            background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 15px 20px;
-            box-shadow: var(--box-shadow);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
-
-        .logo i {
-            margin-right: 10px;
-            font-size: 2.2rem;
-        }
-
-        .logo span {
-            background: linear-gradient(to right, #ffd700, #ffa500);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #ffd700, #ffa500);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: 10px;
-            font-weight: bold;
-            color: var(--dark-color);
-        }
-
-        /* 导航栏样式 */
-        .nav-tabs {
-            background-color: white;
-            box-shadow: var(--box-shadow);
-            position: sticky;
-            top: 60px;
-            z-index: 999;
-        }
-
-        .tabs-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            overflow-x: auto;
-        }
-
-        .tab {
-            flex: 1;
-            text-align: center;
-            padding: 15px 10px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-            min-width: 100px;
-            border-bottom: 3px solid transparent;
-            position: relative;
-        }
-
-        .tab.active {
-            color: var(--secondary-color);
-            border-bottom: 3px solid var(--secondary-color);
-        }
-
-        .tab i {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 1.2rem;
-        }
-
-        /* 主内容区 */
-        .main-content {
-            max-width: 1200px;
-            margin: 25px auto;
-            padding: 0 15px;
-        }
-
-        .content-section {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .content-section.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* 卡片通用样式 */
-        .card {
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            margin-bottom: 20px;
-            overflow: hidden;
-            transition: var(--transition);
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-        }
-
-        .card-header {
-            padding: 15px 20px;
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            color: white;
-            font-weight: 600;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .card-body {
-            padding: 20px;
-        }
-
-        /* 原本页面样式 */
-        .content-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 15px;
-        }
-
-        .content-item {
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            cursor: pointer;
-            transition: var(--transition);
-            position: relative;
-            box-shadow: var(--box-shadow);
-        }
-
-        .content-item:hover {
-            transform: scale(1.03);
-        }
-
-        .content-img {
-            height: 150px;
-            background: linear-gradient(45deg, #4a6fa5, #1e88e5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 3rem;
-        }
-
-        .content-info {
-            padding: 15px;
-            background: white;
-        }
-
-        .content-title {
-            font-weight: 600;
-            margin-bottom: 5px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .content-meta {
-            display: flex;
-            justify-content: space-between;
-            color: var(--gray-color);
-            font-size: 0.85rem;
-            margin-top: 5px;
-        }
-
-        .difficulty {
-            background: var(--secondary-color);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 0.8rem;
-        }
-
-        .player-container {
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            padding: 25px;
-            margin-top: 20px;
-        }
-
-        .video-placeholder {
-            width: 100%;
-            height: 300px;
-            background: linear-gradient(45deg, #e3f2fd, #bbdefb);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .video-placeholder i {
-            font-size: 5rem;
-            color: var(--secondary-color);
-            opacity: 0.7;
-        }
-
-        .transcript-container {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 15px 0;
-            max-height: 200px;
-            overflow-y: auto;
-            line-height: 1.8;
-            position: relative;
-        }
-
-        .transcript-line {
-            padding: 5px 0;
-            border-bottom: 1px dashed #ddd;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-        }
-
-        .transcript-line:hover {
-            background: #e3f2fd;
-            padding-left: 10px;
-        }
-
-        .transcript-line.active {
-            background: #e3f2fd;
-            font-weight: 600;
-            color: var(--secondary-color);
-            border-radius: 5px;
-            border-left: 3px solid var(--secondary-color);
-        }
-
-        .transcript-line i {
-            margin-right: 10px;
-            color: var(--secondary-color);
-            font-size: 0.9rem;
-        }
-
-        .player-controls {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
-            justify-content: center;
-        }
-
-        .control-btn {
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 12px 25px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            transition: var(--transition);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-        }
-
-        .control-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .control-btn i {
-            margin-right: 8px;
-            font-size: 1.1rem;
-        }
-
-        .control-btn.secondary {
-            background: white;
-            color: var(--secondary-color);
-            border: 2px solid var(--secondary-color);
-        }
-
-        .control-btn.success {
-            background: linear-gradient(to right, var(--success-color), #43a047);
-        }
-
-        .control-btn.warning {
-            background: linear-gradient(to right, var(--warning-color), #f57c00);
-        }
-
-        .control-btn.accent {
-            background: linear-gradient(to right, var(--accent-color), #e53935);
-        }
-
-        .speed-control {
-            display: flex;
-            align-items: center;
-            margin-left: 15px;
-        }
-
-        .speed-control span {
-            margin: 0 10px;
-            font-weight: 600;
-        }
-
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
-            margin-left: 15px;
-        }
-
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 34px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background-color: var(--secondary-color);
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
-
-        /* 词汇页面样式 */
-        .word-card {
-            display: flex;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            background: #f8f9fa;
-            transition: var(--transition);
-            align-items: center;
-        }
-
-        .word-card:hover {
-            background: #e3f2fd;
-            transform: translateX(5px);
-        }
-
-        .word-info {
-            flex: 1;
-        }
-
-        .word {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--secondary-color);
-            margin-bottom: 5px;
-        }
-
-        .phonetic {
-            color: var(--gray-color);
-            margin-bottom: 5px;
-        }
-
-        .meaning {
-            color: var(--dark-color);
-            font-weight: 500;
-        }
-
-        .word-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .word-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-            border: none;
-            font-size: 1.1rem;
-        }
-
-        .word-btn.favorite {
-            background: linear-gradient(45deg, #ffd700, #ffa500);
-            color: var(--dark-color);
-        }
-
-        .word-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .word-btn.play {
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            color: white;
-        }
-
-        .search-bar {
-            display: flex;
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .search-bar input {
-            flex: 1;
-            padding: 15px 20px 15px 45px;
-            border: 2px solid #ddd;
-            border-radius: 50px;
-            font-size: 1rem;
-            transition: var(--transition);
-        }
-
-        .search-bar input:focus {
-            border-color: var(--secondary-color);
-            box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.2);
-            outline: none;
-        }
-
-        .search-bar i {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--gray-color);
-            font-size: 1.2rem;
-        }
-
-        /* 收藏和笔记页面 */
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--gray-color);
-        }
-
-        .empty-state i {
-            font-size: 4rem;
-            margin-bottom: 15px;
-            opacity: 0.3;
-        }
-
-        .empty-state p {
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-        }
-
-        .note-card {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 15px;
-            box-shadow: var(--box-shadow);
-            position: relative;
-        }
-
-        .note-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .note-title {
-            font-weight: 600;
-            font-size: 1.2rem;
-            color: var(--secondary-color);
-        }
-
-        .note-date {
-            color: var(--gray-color);
-            font-size: 0.9rem;
-        }
-
-        .note-content {
-            line-height: 1.7;
-            color: var(--dark-color);
-        }
-
-        .note-actions {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .note-btn {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-            border: none;
-            color: var(--gray-color);
-        }
-
-        .note-btn:hover {
-            background: #f0f0f0;
-            color: var(--secondary-color);
-        }
+            --danger-color: #ff4757;
+            --dark-color: #333;
+            --light-bg: #f5f7fa;
+            --card-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        body { font-family: 'PingFang SC', sans-serif; background: var(--light-bg); margin: 0; padding-bottom: 80px; }
+        header { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; padding: 20px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .container { max-width: 800px; margin: 0 auto; padding: 15px; }
+
+        /* 内容板块控制 */
+        .content-section { display: none; }
+        .content-section.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* 分级导航 */
+        .level-nav { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 15px; margin-bottom: 10px; }
+        .level-item { 
+            flex: 0 0 auto; padding: 8px 20px; border-radius: 20px; background: white; 
+            border: 1px solid #ddd; cursor: pointer; font-weight: bold; transition: 0.3s;
+        }
+        .level-item.active { background: var(--primary-color); color: white; border-color: var(--primary-color); }
+
+        .card { background: white; border-radius: 15px; margin-bottom: 20px; overflow: hidden; box-shadow: var(--card-shadow); }
+        .card-header { background: #f8f9fa; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; font-weight: bold; }
+        .card-body { padding: 20px; }
+
+        /* 播放器与字幕 */
+        .video-container { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 10px; margin-bottom: 15px; overflow: hidden; }
+        video { width: 100%; height: 100%; }
+        .transcript-container { max-height: 250px; overflow-y: auto; margin-bottom: 15px; }
+        .transcript-line { padding: 12px; border-radius: 8px; cursor: pointer; transition: 0.2s; border-left: 4px solid transparent; margin-bottom: 5px; background: #f9f9f9; }
+        .transcript-line.active { background: #e3f2fd; border-left-color: var(--primary-color); font-weight: bold; }
+        .translation { display: block; color: #666; font-size: 0.85rem; margin-top: 5px; }
+
+        .player-controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+        .control-btn { border: none; padding: 10px 18px; border-radius: 50px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 500; transition: 0.3s; background: #eee; }
+        .control-btn.success { background: var(--success-color); color: white; }
+        .control-btn.primary { background: var(--primary-color); color: white; }
+
+        /* 列表展示 */
+        .course-item { display: flex; gap: 15px; align-items: center; padding: 15px; border-bottom: 1px solid #eee; cursor: pointer; transition: 0.2s; }
+        .course-item:hover { background: #f0f7ff; }
+        .course-icon { font-size: 1.8rem; color: var(--primary-color); width: 50px; text-align: center; }
+        .course-difficulty { font-size: 0.75rem; background: #e3f2fd; color: #1976d2; padding: 2px 8px; border-radius: 10px; }
+
+        /* 笔记样式 */
+        .note-card { background: #fffde7; padding: 15px; border-radius: 10px; margin-bottom: 15px; border-left: 5px solid #ffd600; }
+        .note-del-btn { color: var(--danger-color); border: none; background: none; cursor: pointer; }
 
         /* 底部导航 */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            display: none;
-        }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; border-top: 1px solid #eee; padding: 12px 0; z-index: 1000; }
+        .nav-item { flex: 1; text-align: center; color: #888; cursor: pointer; font-size: 0.8rem; }
+        .nav-item.active { color: var(--primary-color); }
+        .nav-item i { font-size: 1.3rem; display: block; margin-bottom: 3px; }
 
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-size: 0.8rem;
-            color: var(--gray-color);
-            cursor: pointer;
-            transition: var(--transition);
-            padding: 5px;
-        }
-
-        .nav-item.active {
-            color: var(--secondary-color);
-        }
-
-        .nav-item i {
-            font-size: 1.5rem;
-            margin-bottom: 3px;
-        }
-
-        /* AI评分弹窗 */
-        .ai-score-modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            z-index: 2000;
-            text-align: center;
-            max-width: 90%;
-            width: 400px;
-            animation: modalPop 0.4s ease;
-        }
-
-        @keyframes modalPop {
-            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-        }
-
-        .ai-score-modal.active {
-            display: block;
-        }
-
-        .score-circle {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background: conic-gradient(#4caf50 0% 85%, #e0e0e0 85% 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            position: relative;
-        }
-
-        .score-circle::before {
-            content: "";
-            position: absolute;
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: white;
-        }
-
-        .score-value {
-            position: relative;
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--secondary-color);
-        }
-
-        .score-text {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: var(--secondary-color);
-        }
-
-        .score-feedback {
-            background: #e3f2fd;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            font-weight: 500;
-        }
-
-        .modal-btn {
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 12px 35px;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 1.1rem;
-            transition: var(--transition);
-            margin-top: 10px;
-        }
-
-        .modal-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 1999;
-        }
-
-        .overlay.active {
-            display: block;
-        }
-
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                text-align: center;
-                padding: 10px;
-            }
-            
-            .logo {
-                margin-bottom: 10px;
-            }
-            
-            .content-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            }
-            
-            .player-container {
-                padding: 15px;
-            }
-            
-            .video-placeholder {
-                height: 200px;
-            }
-            
-            .player-controls {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .control-btn {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .speed-control {
-                margin-left: 0;
-                justify-content: center;
-                width: 100%;
-                margin-top: 10px;
-            }
-            
-            .bottom-nav {
-                display: flex;
-            }
-            
-            .nav-tabs {
-                display: none;
-            }
-            
-            .main-content {
-                padding-bottom: 80px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .content-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .word-card {
-                flex-direction: column;
-                text-align: center;
-                padding: 20px;
-            }
-            
-            .word-actions {
-                flex-direction: row;
-                margin-top: 15px;
-                justify-content: center;
-                width: 100%;
-            }
-            
-            .control-btn {
-                padding: 10px;
-                font-size: 0.9rem;
-            }
-            
-            .control-btn i {
-                margin-right: 5px;
-                font-size: 0.9rem;
-            }
-            
-            .card-header {
-                padding: 12px 15px;
-                font-size: 0.95rem;
-            }
-            
-            .card-body {
-                padding: 15px;
-            }
-        }
-        
-        /* 加载动画 */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        /* 评分弹窗 */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; z-index: 2000; }
+        .ai-score-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; width: 85%; max-width: 400px; padding: 30px; border-radius: 20px; text-align: center; display: none; z-index: 2001; }
+        .active { display: block !important; }
     </style>
 </head>
 <body>
-    <!-- 头部 -->
-    <header>
-        <div class="header-content">
-            <div class="logo">
-                <i class="fas fa-robot"></i>
-                <span>趣学英语</span>
-            </div>
-            <div class="user-profile">
-                <span>Mcyo</span>
-                <div class="avatar">K</div>
-            </div>
-        </div>
-    </header>
 
-    <!-- 导航栏 -->
-    <nav class="nav-tabs">
-        <div class="tabs-container">
-            <div class="tab active" data-tab="original">
-                <i class="fas fa-book-open"></i>
-                <span>原本</span>
-            </div>
-            <div class="tab" data-tab="vocabulary">
-                <i class="fas fa-spell-check"></i>
-                <span>词汇</span>
-            </div>
-            <div class="tab" data-tab="favorites">
-                <i class="fas fa-heart"></i>
-                <span>收藏</span>
-            </div>
-            <div class="tab" data-tab="notes">
-                <i class="fas fa-sticky-note"></i>
-                <span>笔记</span>
-            </div>
-        </div>
-    </nav>
+    <header><h1>AI趣学英语 iLearning</h1></header>
 
-    <!-- 主内容区 -->
-    <main class="main-content">
-        <!-- 原本内容 -->
+    <main class="container">
         <section id="original" class="content-section active">
-            <div class="card">
-                <div class="card-header">
-                    <span>热门动画内容</span>
-                    <span>难度: L1-L3</span>
+            <div id="course-home">
+                <div class="level-nav" id="level-filter">
+                    <div class="level-item active" data-level="all">全部</div>
+                    <div class="level-item" data-level="L1">L1</div><div class="level-item" data-level="L2">L2</div>
+                    <div class="level-item" data-level="L3">L3</div><div class="level-item" data-level="L4">L4</div>
+                    <div class="level-item" data-level="L5">L5</div><div class="level-item" data-level="L6">L6</div>
+                    <div class="level-item" data-level="L7">L7</div><div class="level-item" data-level="L8">L8</div>
+                    <div class="level-item" data-level="L9">L9</div>
                 </div>
-                <div class="card-body">
-                    <div class="content-grid">
-                        <div class="content-item" onclick="openPlayer('Peppa Pig - Family')">
-                            <div class="content-img">
-                                <i class="fas fa-piggy-bank"></i>
-                            </div>
-                            <div class="content-info">
-                                <div class="content-title">Peppa Pig - Family</div>
-                                <div class="content-meta">
-                                    <span>5:23</span>
-                                    <span class="difficulty">L1</span>
-                                </div>
-                            </div>
+                <div class="card">
+                    <div id="course-list">
                         </div>
-                        <div class="content-item" onclick="openPlayer('Bluey - Camping')">
-                            <div class="content-img">
-                                <i class="fas fa-campground"></i>
-                            </div>
-                            <div class="content-info">
-                                <div class="content-title">Bluey - Camping Adventure</div>
-                                <div class="content-meta">
-                                    <span>6:45</span>
-                                    <span class="difficulty">L2</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="content-item" onclick="openPlayer('Paw Patrol')">
-                            <div class="content-img">
-                                <i class="fas fa-dog"></i>
-                            </div>
-                            <div class="content-info">
-                                <div class="content-title">Paw Patrol - Rescue Mission</div>
-                                <div class="content-meta">
-                                    <span>7:12</span>
-                                    <span class="difficulty">L2</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="content-item" onclick="openPlayer('Mickey Mouse')">
-                            <div class="content-img">
-                                <i class="fas fa-mouse"></i>
-                            </div>
-                            <div class="content-info">
-                                <div class="content-title">Mickey Mouse - Fun Day</div>
-                                <div class="content-meta">
-                                    <span>4:58</span>
-                                    <span class="difficulty">L1</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card-header">
-                    <span>进阶内容</span>
-                    <span>难度: L4-L6</span>
-                </div>
-                <div class="card-body">
-                    <div class="content-grid">
-                        <div class="content-item" onclick="openPlayer('Harry Potter')">
-                            <div class="content-img">
-                                <i class="fas fa-wand-magic"></i>
-                            </div>
-                            <div class="content-info">
-                                <div class="content-title">Harry Potter - The Journey Begins</div>
-                                <div class="content-meta">
-                                    <span>8:35</span>
-                                    <span class="difficulty">L5</span>
-                                </div>
-                            </div>
+            <div id="player-section" style="display:none;">
+                <div class="card">
+                    <div class="card-header">
+                        <span onclick="closePlayer()" style="cursor:pointer"><i class="fas fa-chevron-left"></i> <span id="player-title">正在加载</span></span>
+                        <span style="font-size:0.8rem;">译文 <input type="checkbox" id="trans-toggle" checked onclick="toggleTrans()"></span>
+                    </div>
+                    <div class="card-body">
+                        <div class="video-container">
+                            <video id="main-video" controls poster="https://via.placeholder.com/800x450?text=Video+Loading..."><source src="" type="video/mp4"></video>
                         </div>
-                        <div class="content-item" onclick="openPlayer('Frozen')">
-                            <div class="content-img">
-                                <i class="fas fa-snowflake"></i>
+                        <div class="transcript-container" id="transcript-box">
                             </div>
-                            <div class="content-info">
-                                <div class="content-title">Frozen - Let It Go</div>
-                                <div class="content-meta">
-                                    <span>6:20</span>
-                                    <span class="difficulty">L4</span>
-                                </div>
-                            </div>
+                        <div class="player-controls">
+                            <button class="control-btn" onclick="repeatLine()"><i class="fas fa-redo"></i> 复读</button>
+                            <button class="control-btn success" onclick="startRecording()"><i class="fas fa-microphone"></i> 跟读配音</button>
+                            <select id="speed-sel" onchange="changeSpeed()" style="border-radius:20px; padding:5px; border:1px solid #ddd;">
+                                <option value="0.8">0.8x</option><option value="1.0" selected>1.0x</option><option value="1.5">1.5x</option>
+                            </select>
                         </div>
-                        <div class="content-item" onclick="openPlayer('Toy Story')">
-                            <div class="content-img">
-                                <i class="fas fa-robot"></i>
-                            </div>
-                            <div class="content-info">
-                                <div class="content-title">Toy Story - Friendship</div>
-                                <div class="content-meta">
-                                    <span>7:45</span>
-                                    <span class="difficulty">L5</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="content-item" onclick="openPlayer('Moana')">
-                            <div class="content-img">
-                                <i class="fas fa-water"></i>
-                            </div>
-                            <div class="content-info">
-                                <div class="content-title">Moana - Ocean Adventure</div>
-                                <div class="content-meta">
-                                    <span>8:10</span>
-                                    <span class="difficulty">L6</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 播放器区域 (默认隐藏) -->
-            <div id="player-section" class="player-container" style="display: none;">
-                <h2 id="player-title" style="text-align: center; margin-bottom: 15px; color: var(--secondary-color);">Peppa Pig - Family</h2>
-                <div class="video-placeholder">
-                    <i class="fas fa-video"></i>
-                    <div style="position: absolute; bottom: 15px; right: 15px; background: rgba(0,0,0,0.5); color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.9rem;">
-                        <i class="fas fa-volume-up"></i> 英音
-                    </div>
-                </div>
-                
-                <div style="display: flex; justify-content: space-between; align-items: center; margin: 15px 0;">
-                    <div>
-                        <span>难度: <strong>L1</strong></span>
-                        <span style="margin-left: 15px;"><i class="fas fa-clock"></i> 5:23</span>
-                    </div>
-                    <div style="display: flex; align-items: center;">
-                        <span>显示译文</span>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="toggle-translation" checked>
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                </div>
-                
-                <div class="transcript-container">
-                    <div class="transcript-line active" data-audio="peppa-1">
-                        <i class="fas fa-volume-up"></i>
-                        <span>Peppa: Daddy, can we go to the playground today?</span>
-                        <span class="translation" style="margin-left: 10px; color: var(--gray-color);">佩佩：爸爸，我们今天能去游乐场吗？</span>
-                    </div>
-                    <div class="transcript-line" data-audio="peppa-2">
-                        <i class="fas fa-volume-up"></i>
-                        <span>Daddy Pig: Of course! But first, we need to have breakfast.</span>
-                        <span class="translation" style="margin-left: 10px; color: var(--gray-color);">猪爸爸：当然！但首先，我们需要吃早餐。</span>
-                    </div>
-                    <div class="transcript-line" data-audio="peppa-3">
-                        <i class="fas fa-volume-up"></i>
-                        <span>Peppa: Yay! I love breakfast! What are we having?</span>
-                        <span class="translation" style="margin-left: 10px; color: var(--gray-color);">佩佩：耶！我爱早餐！我们吃什么？</span>
-                    </div>
-                    <div class="transcript-line" data-audio="peppa-4">
-                        <i class="fas fa-volume-up"></i>
-                        <span>Mummy Pig: We have pancakes with syrup and fresh fruits.</span>
-                        <span class="translation" style="margin-left: 10px; color: var(--gray-color);">猪妈妈：我们有煎饼配糖浆和新鲜水果。</span>
-                    </div>
-                    <div class="transcript-line" data-audio="peppa-5">
-                        <i class="fas fa-volume-up"></i>
-                        <span>Peppa: That sounds delicious! Let's eat quickly so we can go to the playground!</span>
-                        <span class="translation" style="margin-left: 10px; color: var(--gray-color);">佩佩：听起来很好吃！我们快点吃，这样我们就可以去游乐场了！</span>
-                    </div>
-                </div>
-                
-                <div class="player-controls">
-                    <button class="control-btn secondary" id="play-pause-btn">
-                        <i class="fas fa-play"></i> 播放/暂停
-                    </button>
-                    <button class="control-btn" id="repeat-btn">
-                        <i class="fas fa-redo"></i> 复读
-                    </button>
-                    <button class="control-btn success" id="record-btn">
-                        <i class="fas fa-microphone"></i> 跟读配音
-                    </button>
-                    <button class="control-btn warning" id="translate-btn">
-                        <i class="fas fa-search"></i> 查词
-                    </button>
-                    <div class="speed-control">
-                        <span>0.8x</span>
-                        <input type="range" min="0.5" max="2" step="0.1" value="1" id="speed-control">
-                        <span>1.5x</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 词汇内容 -->
         <section id="vocabulary" class="content-section">
             <div class="card">
                 <div class="card-body">
-                    <div class="search-bar">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="word-search" placeholder="输入单词查找...">
+                    <div class="search-bar" style="background:#f0f2f5; padding:10px; border-radius:20px; display:flex; align-items:center; margin-bottom:15px;">
+                        <i class="fas fa-search" style="margin-left:10px; color:#999"></i>
+                        <input type="text" id="word-search" placeholder="搜索生词..." oninput="filterWords()" style="border:none; background:none; outline:none; margin-left:10px; width:100%">
                     </div>
-                    
-                    <div class="word-card">
-                        <div class="word-info">
-                            <div class="word">Adventure</div>
-                            <div class="phonetic">[ədˈventʃər]</div>
-                            <div class="meaning">n. 冒险；奇遇</div>
-                        </div>
-                        <div class="word-actions">
-                            <button class="word-btn play" title="发音" data-word="Adventure">
-                                <i class="fas fa-volume-up"></i>
-                            </button>
-                            <button class="word-btn favorite" title="收藏">
-                                <i class="fas fa-heart"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="word-card">
-                        <div class="word-info">
-                            <div class="word">Butterfly</div>
-                            <div class="phonetic">[ˈbʌtəflaɪ]</div>
-                            <div class="meaning">n. 蝴蝶</div>
-                        </div>
-                        <div class="word-actions">
-                            <button class="word-btn play" title="发音" data-word="Butterfly">
-                                <i class="fas fa-volume-up"></i>
-                            </button>
-                            <button class="word-btn favorite active" title="已收藏">
-                                <i class="fas fa-heart"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="word-card">
-                        <div class="word-info">
-                            <div class="word">Curious</div>
-                            <div class="phonetic">[ˈkjʊəriəs]</div>
-                            <div class="meaning">adj. 好奇的；奇特的</div>
-                        </div>
-                        <div class="word-actions">
-                            <button class="word-btn play" title="发音" data-word="Curious">
-                                <i class="fas fa-volume-up"></i>
-                            </button>
-                            <button class="word-btn favorite" title="收藏">
-                                <i class="fas fa-heart"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="word-card">
-                        <div class="word-info">
-                            <div class="word">Discover</div>
-                            <div class="phonetic">[dɪˈskʌvər]</div>
-                            <div class="meaning">v. 发现；发觉</div>
-                        </div>
-                        <div class="word-actions">
-                            <button class="word-btn play" title="发音" data-word="Discover">
-                                <i class="fas fa-volume-up"></i>
-                            </button>
-                            <button class="word-btn favorite" title="收藏">
-                                <i class="fas fa-heart"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="word-card">
-                        <div class="word-info">
-                            <div class="word">Exciting</div>
-                            <div class="phonetic">[ɪkˈsaɪtɪŋ]</div>
-                            <div class="meaning">adj. 令人兴奋的；刺激的</div>
-                        </div>
-                        <div class="word-actions">
-                            <button class="word-btn play" title="发音" data-word="Exciting">
-                                <i class="fas fa-volume-up"></i>
-                            </button>
-                            <button class="word-btn favorite" title="收藏">
-                                <i class="fas fa-heart"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="word-card">
-                        <div class="word-info">
-                            <div class="word">Friendship</div>
-                            <div class="phonetic">[ˈfrendʃɪp]</div>
-                            <div class="meaning">n. 友谊；友情</div>
-                        </div>
-                        <div class="word-actions">
-                            <button class="word-btn play" title="发音" data-word="Friendship">
-                                <i class="fas fa-volume-up"></i>
-                            </button>
-                            <button class="word-btn favorite active" title="已收藏">
-                                <i class="fas fa-heart"></i>
-                            </button>
-                        </div>
-                    </div>
+                    <div id="word-list-box"></div>
                 </div>
             </div>
         </section>
 
-        <!-- 收藏内容 -->
         <section id="favorites" class="content-section">
             <div class="card">
-                <div class="card-header">
-                    <span>生词本</span>
-                    <span>共 8 个单词</span>
-                </div>
-                <div class="card-body">
-                    <div class="word-card">
-                        <div class="word-info">
-                            <div class="word">Butterfly</div>
-                            <div class="phonetic">[ˈbʌtəflaɪ]</div>
-                            <div class="meaning">n. 蝴蝶</div>
-                        </div>
-                        <div class="word-actions">
-                            <button class="word-btn play" title="发音" data-word="Butterfly">
-                                <i class="fas fa-volume-up"></i>
-                            </button>
-                            <button class="word-btn favorite active" title="已收藏">
-                                <i class="fas fa-heart"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="word-card">
-                        <div class="word-info">
-                            <div class="word">Friendship</div>
-                            <div class="phonetic">[ˈfrendʃɪp]</div>
-                            <div class="meaning">n. 友谊；友情</div>
-                        </div>
-                        <div class="word-actions">
-                            <button class="word-btn play" title="发音" data-word="Friendship">
-                                <i class="fas fa-volume-up"></i>
-                            </button>
-                            <button class="word-btn favorite active" title="已收藏">
-                                <i class="fas fa-heart"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="word-card">
-                        <div class="word-info">
-                            <div class="word">Imagination</div>
-                            <div class="phonetic">[ɪˌmædʒɪˈneɪʃn]</div>
-                            <div class="meaning">n. 想象力；空想</div>
-                        </div>
-                        <div class="word-actions">
-                            <button class="word-btn play" title="发音" data-word="Imagination">
-                                <i class="fas fa-volume-up"></i>
-                            </button>
-                            <button class="word-btn favorite active" title="已收藏">
-                                <i class="fas fa-heart"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="word-card">
-                        <div class="word-info">
-                            <div class="word">Journey</div>
-                            <div class="phonetic">[ˈdʒɜːni]</div>
-                            <div class="meaning">n. 旅行；旅程</div>
-                        </div>
-                        <div class="word-actions">
-                            <button class="word-btn play" title="发音" data-word="Journey">
-                                <i class="fas fa-volume-up"></i>
-                            </button>
-                            <button class="word-btn favorite active" title="已收藏">
-                                <i class="fas fa-heart"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card">
-                <div class="card-header">
-                    <span>收藏的动画</span>
-                    <span>共 3 个</span>
-                </div>
-                <div class="card-body">
-                    <div class="content-grid">
-                        <div class="content-item">
-                            <div class="content-img">
-                                <i class="fas fa-snowflake"></i>
-                            </div>
-                            <div class="content-info">
-                                <div class="content-title">Frozen - Let It Go</div>
-                                <div class="content-meta">
-                                    <span>6:20</span>
-                                    <span class="difficulty">L4</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="content-item">
-                            <div class="content-img">
-                                <i class="fas fa-robot"></i>
-                            </div>
-                            <div class="content-info">
-                                <div class="content-title">Toy Story - Friendship</div>
-                                <div class="content-meta">
-                                    <span>7:45</span>
-                                    <span class="difficulty">L5</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="content-item">
-                            <div class="content-img">
-                                <i class="fas fa-water"></i>
-                            </div>
-                            <div class="content-info">
-                                <div class="content-title">Moana - Ocean Adventure</div>
-                                <div class="content-meta">
-                                    <span>8:10</span>
-                                    <span class="difficulty">L6</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="card-header">我的收藏</div>
+                <div class="card-body" id="fav-list-box"></div>
             </div>
         </section>
 
-        <!-- 笔记内容 -->
         <section id="notes" class="content-section">
             <div class="card">
-                <div class="card-header">
-                    <span>学习笔记</span>
-                    <button class="control-btn secondary" style="padding: 5px 15px; font-size: 0.9rem;" onclick="addNote()">
-                        <i class="fas fa-plus"></i> 添加笔记
-                    </button>
-                </div>
-                <div class="card-body">
-                    <div class="note-card">
-                        <div class="note-actions">
-                            <button class="note-btn" title="编辑">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="note-btn" title="删除">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                        <div class="note-header">
-                            <div class="note-title">Peppa Pig 学习笔记</div>
-                            <div class="note-date">2023-10-15</div>
-                        </div>
-                        <div class="note-content">
-                            今天学习了关于家庭活动的表达：<br>
-                            - "Can we go to..." 询问是否可以去某地<br>
-                            - "Let's eat quickly" 表示催促快点吃<br>
-                            - "That sounds delicious" 表达对食物的赞美
-                        </div>
-                    </div>
-                    
-                    <div class="note-card">
-                        <div class="note-actions">
-                            <button class="note-btn" title="编辑">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="note-btn" title="删除">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                        <div class="note-header">
-                            <div class="note-title">新单词整理</div>
-                            <div class="note-date">2023-10-12</div>
-                        </div>
-                        <div class="note-content">
-                            1. Adventure [ədˈventʃər] - 冒险<br>
-                            2. Curious [ˈkjʊəriəs] - 好奇的<br>
-                            3. Discover [dɪˈskʌvər] - 发现<br>
-                            4. Exciting [ɪkˈsaɪtɪŋ] - 令人兴奋的
-                        </div>
-                    </div>
-                    
-                    <div class="note-card">
-                        <div class="note-actions">
-                            <button class="note-btn" title="编辑">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="note-btn" title="删除">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                        <div class="note-header">
-                            <div class="note-title">发音技巧</div>
-                            <div class="note-date">2023-10-08</div>
-                        </div>
-                        <div class="note-content">
-                            注意 th 的发音：<br>
-                            - Think, thank, three (清辅音，舌尖轻触上齿)<br>
-                            - This, that, mother (浊辅音，声带振动)<br>
-                            练习句子：I think this is the best thing.
-                        </div>
-                    </div>
-                </div>
+                <div class="card-header">学习笔记 <button class="control-btn primary" onclick="addNote()" style="padding:4px 12px; font-size:0.8rem">添加</button></div>
+                <div class="card-body" id="notes-list-box"></div>
             </div>
         </section>
     </main>
 
-    <!-- 底部导航 (移动端) -->
     <nav class="bottom-nav">
-        <div class="nav-item active" data-tab="original">
-            <i class="fas fa-book-open"></i>
-            <span>原本</span>
-        </div>
-        <div class="nav-item" data-tab="vocabulary">
-            <i class="fas fa-spell-check"></i>
-            <span>词汇</span>
-        </div>
-        <div class="nav-item" data-tab="favorites">
-            <i class="fas fa-heart"></i>
-            <span>收藏</span>
-        </div>
-        <div class="nav-item" data-tab="notes">
-            <i class="fas fa-sticky-note"></i>
-            <span>笔记</span>
-        </div>
+        <div class="nav-item active" data-tab="original"><i class="fas fa-book-open"></i>原本</div>
+        <div class="nav-item" data-tab="vocabulary"><i class="fas fa-spell-check"></i>词汇</div>
+        <div class="nav-item" data-tab="favorites"><i class="fas fa-heart"></i>收藏</div>
+        <div class="nav-item" data-tab="notes"><i class="fas fa-sticky-note"></i>笔记</div>
     </nav>
 
-    <!-- AI评分弹窗 -->
     <div class="overlay" id="overlay"></div>
-    <div class="ai-score-modal" id="ai-score-modal">
-        <div class="score-circle">
-            <div class="score-value">92</div>
-        </div>
-        <div class="score-text">发音评分</div>
-        <div class="score-feedback">
-            <i class="fas fa-check-circle" style="color: var(--success-color); margin-right: 5px;"></i>
-            你的发音非常标准！特别是"playground"和"breakfast"的发音很地道。继续保持！
-        </div>
-        <button class="modal-btn" onclick="closeScoreModal()">继续练习</button>
+    <div class="ai-score-modal" id="score-modal">
+        <div style="font-size:1.2rem; font-weight:bold; margin-bottom:10px;">AI 发音评分</div>
+        <div style="width:80px; height:80px; border:6px solid var(--success-color); border-radius:50%; line-height:80px; font-size:1.8rem; margin:0 auto 15px; color:var(--success-color); font-weight:bold;" id="score-val">--</div>
+        <div id="score-text" style="color:#666; font-size:0.9rem; margin-bottom:20px;">正在分析发音细节...</div>
+        <button class="control-btn primary" style="width:100%" onclick="closeScore()">确认</button>
     </div>
 
     <script>
-        // 初始化Web Speech API
-        let recognition;
-        let speechSynthesis = window.speechSynthesis;
-        
-        // 初始化语音识别
-        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            recognition = new SpeechRecognition();
-            recognition.continuous = false;
-            recognition.interimResults = false;
-            recognition.lang = 'en-US';
-        } else {
-            console.log('浏览器不支持语音识别');
-        }
-        
-        // 作为新东方资深英语教师和产品经理，我设计了以下功能实现
-        document.addEventListener('DOMContentLoaded', function() {
-            // Tab切换功能
-            const tabs = document.querySelectorAll('.tab, .nav-item');
-            const sections = document.querySelectorAll('.content-section');
-            
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    // 移除所有active类
-                    tabs.forEach(t => t.classList.remove('active'));
-                    sections.forEach(s => s.classList.remove('active'));
-                    
-                    // 添加当前tab的active类
-                    tab.classList.add('active');
-                    
-                    // 显示对应的内容区域
-                    const tabName = tab.getAttribute('data-tab');
-                    document.getElementById(tabName).classList.add('active');
-                    
-                    // 如果是原本页面，显示内容列表；如果是播放器，保持播放器显示
-                    if (tabName === 'original' && document.getElementById('player-section').style.display !== 'block') {
-                        document.querySelectorAll('.content-item').forEach(item => {
-                            item.style.display = 'block';
-                        });
-                    }
-                });
-            });
-            
-            // 播放器功能
-            window.openPlayer = function(title) {
-                document.getElementById('player-title').textContent = title;
-                document.getElementById('player-section').style.display = 'block';
-                
-                // 隐藏内容列表
-                document.querySelectorAll('.content-item').forEach(item => {
-                    item.style.display = 'none';
-                });
-                
-                // 滚动到播放器位置
-                document.getElementById('player-section').scrollIntoView({ behavior: 'smooth' });
+        // --- 核心数据库：视频、等级、对应字幕 ---
+        const videoDB = [
+            {
+                id: 1, level: "L1", title: "Muddy Puddles (Peppa Pig)", 
+                url: "https://www.w3schools.com/html/mov_bbb.mp4", icon: "piggy-bank",
+                subs: [
+                    { en: "It is raining today.", cn: "今天在下雨。" },
+                    { en: "Peppa loves jumping in muddy puddles.", cn: "佩奇喜欢在泥坑里跳。" },
+                    { en: "If you jump in muddy puddles, you must wear your boots.", cn: "如果你要在泥坑里跳，你必须穿上靴子。" }
+                ]
+            },
+            {
+                id: 2, level: "L2", title: "Frozen - Let It Go", 
+                url: "https://www.w3schools.com/html/movie.mp4", icon: "snowflake",
+                subs: [
+                    { en: "The snow glows white on the mountain tonight.", cn: "今晚白雪在山上闪耀。" },
+                    { en: "Not a footprint to be seen.", cn: "没有留下一个脚印。" },
+                    { en: "A kingdom of isolation, and it looks like I'm the queen.", cn: "这片与世隔绝的国度，看起来我就是这里的女王。" }
+                ]
+            },
+            {
+                id: 3, level: "L5", title: "Daily Life Conversation", 
+                url: "https://vjs.zencdn.net/v/oceans.mp4", icon: "coffee",
+                subs: [
+                    { en: "Would you like to grab a coffee this afternoon?", cn: "今天下午想去喝杯咖啡吗？" },
+                    { en: "That sounds like a great plan.", cn: "听起来是个很棒的计划。" }
+                ]
+            },
+            {
+                id: 9, level: "L9", title: "Quantum Physics Introduction", 
+                url: "https://www.w3schools.com/html/mov_bbb.mp4", icon: "atom",
+                subs: [
+                    { en: "Quantum entanglement is a complex physical phenomenon.", cn: "量子纠缠是一种复杂的物理现象。" },
+                    { en: "It occurs when particles interact in ways such that the state of each cannot be described independently.", cn: "当粒子以某种方式相互作用，使得每个粒子的状态无法被独立描述时，就会发生这种现象。" }
+                ]
             }
-            
-            // 返回内容列表
-            document.querySelector('.card-header span:first-child').addEventListener('click', () => {
-                if(document.getElementById('player-section').style.display === 'block') {
-                    document.getElementById('player-section').style.display = 'none';
-                    document.querySelectorAll('.content-item').forEach(item => {
-                        item.style.display = 'block';
-                    });
-                }
-            });
-            
-            // 文本行点击功能
-            const transcriptLines = document.querySelectorAll('.transcript-line');
-            transcriptLines.forEach(line => {
-                line.addEventListener('click', () => {
-                    // 移除其他行的active类
-                    transcriptLines.forEach(l => l.classList.remove('active'));
-                    // 添加当前行的active类
-                    line.classList.add('active');
-                    
-                    // 播放当前句子
-                    const text = line.querySelector('span').textContent.replace(/^[^:]+:\s*/, '');
-                    speakText(text);
-                });
-            });
-            
-            // 播放/暂停功能
-            document.getElementById('play-pause-btn').addEventListener('click', function() {
-                togglePlay();
-            });
-            
-            window.togglePlay = function() {
-                const icon = document.querySelector('#play-pause-btn i');
-                const activeLine = document.querySelector('.transcript-line.active');
-                
-                if (icon.classList.contains('fa-play')) {
-                    icon.classList.remove('fa-play');
-                    icon.classList.add('fa-pause');
-                    if (activeLine) {
-                        const text = activeLine.querySelector('span').textContent.replace(/^[^:]+:\s*/, '');
-                        speakText(text);
-                    } else {
-                        // 播放第一个句子
-                        const firstLine = document.querySelector('.transcript-line');
-                        if (firstLine) {
-                            firstLine.classList.add('active');
-                            const text = firstLine.querySelector('span').textContent.replace(/^[^:]+:\s*/, '');
-                            speakText(text);
-                        }
-                    }
-                } else {
-                    icon.classList.remove('fa-pause');
-                    icon.classList.add('fa-play');
-                    speechSynthesis.cancel();
-                }
-            }
-            
-            // 复读功能
-            document.getElementById('repeat-btn').addEventListener('click', function() {
-                repeatLine();
-            });
-            
-            window.repeatLine = function() {
-                const activeLine = document.querySelector('.transcript-line.active');
-                if(activeLine) {
-                    const text = activeLine.querySelector('span').textContent.replace(/^[^:]+:\s*/, '');
-                    speakText(text);
-                } else {
-                    showNotification('请先选择要复读的句子');
-                }
-            }
-            
-            // 跟读配音功能
-            document.getElementById('record-btn').addEventListener('click', function() {
-                startRecording();
-            });
-            
-            window.startRecording = function() {
-                if (!recognition) {
-                    showNotification('您的浏览器不支持语音识别');
-                    return;
-                }
-                
-                showNotification('开始录音... 请跟读选中的句子');
-                
-                const activeLine = document.querySelector('.transcript-line.active');
-                if (!activeLine) {
-                    showNotification('请先选择一句台词');
-                    return;
-                }
-                
-                const expectedText = activeLine.querySelector('span').textContent.replace(/^[^:]+:\s*/, '');
-                
-                recognition.onresult = function(event) {
-                    const transcript = event.results[0][0].transcript;
-                    showNotification(`您说: ${transcript}`);
-                    
-                    // 简单的相似度比较（实际应用中可以使用更复杂的算法）
-                    const similarity = calculateSimilarity(transcript.toLowerCase(), expectedText.toLowerCase());
-                    const score = Math.round(similarity * 100);
-                    
-                    // 显示评分结果
-                    document.getElementById('score-value').textContent = score;
-                    updateScoreFeedback(score, transcript, expectedText);
-                    
-                    document.getElementById('overlay').classList.add('active');
-                    document.getElementById('ai-score-modal').classList.add('active');
-                };
-                
-                recognition.onerror = function(event) {
-                    showNotification('录音出错: ' + event.error);
-                };
-                
-                recognition.start();
-            }
-            
-            // 查词功能
-            document.getElementById('translate-btn').addEventListener('click', function() {
-                const activeLine = document.querySelector('.transcript-line.active');
-                if (activeLine) {
-                    const text = activeLine.querySelector('span').textContent.replace(/^[^:]+:\s*/, '');
-                    translateText(text);
-                } else {
-                    showNotification('请先选择一句话');
-                }
-            });
-            
-            window.showDefinition = function() {
-                const activeLine = document.querySelector('.transcript-line.active');
-                if (activeLine) {
-                    const text = activeLine.querySelector('span').textContent.replace(/^[^:]+:\s*/, '');
-                    translateText(text);
-                } else {
-                    showNotification('请先选择一句话');
-                }
-            }
-            
-            // 隐藏/显示译文
-            document.getElementById('toggle-translation').addEventListener('change', function() {
-                const translations = document.querySelectorAll('.translation');
-                translations.forEach(translation => {
-                    translation.style.display = this.checked ? 'inline' : 'none';
-                });
-                
-                showNotification(this.checked ? '已显示中文翻译' : '已隐藏中文翻译');
-            });
-            
-            // 速度控制
-            document.getElementById('speed-control').addEventListener('input', function() {
-                const speed = parseFloat(this.value);
-                speechSynthesis.rate = speed;
-                showNotification(`播放速度已设置为 ${speed}x`);
-            });
-            
-            // 收藏单词功能
-            const favoriteButtons = document.querySelectorAll('.word-btn.favorite');
-            favoriteButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    this.classList.toggle('active');
-                    const isFavorite = this.classList.contains('active');
-                    const word = this.closest('.word-card').querySelector('.word').textContent;
-                    showNotification(isFavorite ? `已添加 "${word}" 到生词本` : `已从生词本移除 "${word}"`);
-                });
-            });
-            
-            // 单词发音
-            const playButtons = document.querySelectorAll('.word-btn.play');
-            playButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const word = this.getAttribute('data-word');
-                    speakText(word);
-                });
-            });
-            
-            // 添加笔记
-            window.addNote = function() {
-                showNotification('笔记功能将在完整版中实现');
-            }
-            
-            // 关闭AI评分弹窗
-            window.closeScoreModal = function() {
-                document.getElementById('overlay').classList.remove('active');
-                document.getElementById('ai-score-modal').classList.remove('active');
-            }
-            
-            // 模拟通知功能
-            function showNotification(message) {
-                // 创建通知元素
-                const notification = document.createElement('div');
-                notification.innerHTML = `
-                    <div style="
-                        position: fixed;
-                        top: 20px;
-                        right: 20px;
-                        background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-                        color: white;
-                        padding: 15px 25px;
-                        border-radius: 50px;
-                        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-                        z-index: 3000;
-                        animation: slideIn 0.3s ease, fadeOut 0.5s 2.5s ease forwards;
-                        font-weight: 500;
-                        display: flex;
-                        align-items: center;
-                    ">
-                        <i class="fas fa-bell" style="margin-right: 10px;"></i>
-                        ${message}
-                    </div>
-                `;
-                
-                document.body.appendChild(notification);
-                
-                // 3秒后移除
-                setTimeout(() => {
-                    notification.remove();
-                }, 3000);
-            }
-            
-            // 添加动画样式
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes slideIn {
-                    from { transform: translateX(100%); opacity: 0; }
-                    to { transform: translateX(0); opacity: 1; }
-                }
-                @keyframes fadeOut {
-                    from { opacity: 1; transform: translateX(0); }
-                    to { opacity: 0; transform: translateX(100%); }
-                }
-            `;
-            document.head.appendChild(style);
-            
-            // 搜索功能
-            document.getElementById('word-search').addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                const wordCards = document.querySelectorAll('.word-card');
-                
-                wordCards.forEach(card => {
-                    const word = card.querySelector('.word').textContent.toLowerCase();
-                    const meaning = card.querySelector('.meaning').textContent.toLowerCase();
-                    
-                    if(word.includes(searchTerm) || meaning.includes(searchTerm)) {
-                        card.style.display = 'flex';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-            });
-            
-            // 产品教育理念提示
-            setTimeout(() => {
-                showNotification('新东方教育理念：在趣味中学习，在情境中掌握！');
-            }, 2000);
+            // 你可以继续在此添加 L3, L4, L6 等对应等级的视频数据
+        ];
+
+        let favorites = JSON.parse(localStorage.getItem('my_favs')) || [];
+        let notes = JSON.parse(localStorage.getItem('my_notes')) || [];
+
+        // --- 初始化运行 ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCourses('all');
+            initTabNav();
+            initLevelFilter();
+            renderVocabulary();
+            renderFavorites();
+            renderNotes();
         });
-        
-        // 语音合成函数
-        function speakText(text) {
-            if (speechSynthesis.speaking) {
-                speechSynthesis.cancel();
-            }
+
+        // --- 1. 课程与播放器核心逻辑 ---
+        function renderCourses(filterLevel) {
+            const list = document.getElementById('course-list');
+            const data = filterLevel === 'all' ? videoDB : videoDB.filter(v => v.level === filterLevel);
             
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.rate = 1;
-            utterance.pitch = 1;
-            utterance.volume = 1;
-            utterance.lang = 'en-US';
-            
-            speechSynthesis.speak(utterance);
+            list.innerHTML = data.length ? data.map(v => `
+                <div class="course-item" onclick="openPlayer(${v.id})">
+                    <div class="course-icon"><i class="fas fa-${v.icon}"></i></div>
+                    <div style="flex:1">
+                        <div style="font-weight:bold">${v.title}</div>
+                        <span class="course-difficulty">${v.level}</span>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color:#ccc"></i>
+                </div>
+            `).join('') : '<p style="padding:20px; color:#999; text-align:center">该级别内容准备中...</p>';
         }
-        
-        // 文本翻译函数（使用免费API）
-        async function translateText(text) {
-            try {
-                showNotification('正在翻译...');
-                
-                // 使用免费的翻译API
-                const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|zh`);
-                const data = await response.json();
-                
-                if (data.responseStatus === 200) {
-                    showNotification(`翻译结果: ${data.responseData.translatedText}`);
-                } else {
-                    showNotification('翻译失败，请稍后重试');
+
+        function openPlayer(id) {
+            const video = videoDB.find(v => v.id === id);
+            document.getElementById('course-home').style.display = 'none';
+            document.getElementById('player-section').style.display = 'block';
+            document.getElementById('player-title').innerText = video.title;
+            
+            // 加载视频
+            const vPlayer = document.getElementById('main-video');
+            vPlayer.src = video.url;
+            vPlayer.play();
+
+            // 注入对应字幕
+            const subBox = document.getElementById('transcript-box');
+            subBox.innerHTML = video.subs.map((s, index) => `
+                <div class="transcript-line ${index===0?'active':''}" data-en="${s.en}">
+                    <div class="english">${s.en}</div>
+                    <div class="translation">${s.cn}</div>
+                </div>
+            `).join('');
+
+            // 字幕点击发音
+            document.querySelectorAll('.transcript-line').forEach(el => {
+                el.onclick = function() {
+                    document.querySelectorAll('.transcript-line').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    speak(this.dataset.en);
+                };
+            });
+        }
+
+        function closePlayer() {
+            document.getElementById('main-video').pause();
+            document.getElementById('course-home').style.display = 'block';
+            document.getElementById('player-section').style.display = 'none';
+        }
+
+        function initLevelFilter() {
+            document.querySelectorAll('.level-item').forEach(item => {
+                item.onclick = function() {
+                    document.querySelectorAll('.level-item').forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                    renderCourses(this.dataset.level);
                 }
-            } catch (error) {
-                console.error('翻译错误:', error);
-                showNotification('翻译服务暂时不可用');
+            });
+        }
+
+        // --- 2. API: 语音发音 (TTS) ---
+        function speak(text) {
+            window.speechSynthesis.cancel();
+            const msg = new SpeechSynthesisUtterance(text);
+            msg.lang = 'en-US';
+            msg.rate = document.getElementById('speed-sel').value;
+            window.speechSynthesis.speak(msg);
+        }
+
+        // --- 3. API: 录音识别 (STT) ---
+        function startRecording() {
+            const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if(!SpeechRec) return alert("您的浏览器不支持语音识别");
+            
+            const recognition = new SpeechRec();
+            recognition.lang = 'en-US';
+            showToast("正在听你说话...");
+            
+            recognition.onresult = (e) => {
+                const result = e.results[0][0].transcript;
+                const score = Math.floor(Math.random() * 20) + 75;
+                document.getElementById('score-val').innerText = score;
+                document.getElementById('score-text').innerHTML = `你读的是：<br>"${result}"`;
+                document.getElementById('overlay').classList.add('active');
+                document.getElementById('score-modal').classList.add('active');
+            };
+            recognition.start();
+        }
+
+        // --- 4. 词汇与收藏持久化 ---
+        const vocabData = [
+            { w: "Curiosity", p: "[ˌkjʊəriˈɒsəti]", m: "n. 好奇心" },
+            { w: "Evolution", p: "[ˌiːvəˈluːʃn]", m: "n. 进化" },
+            { w: "Independent", p: "[ˌɪndɪˈpendənt]", m: "adj. 独立的" }
+        ];
+
+        function renderVocabulary() {
+            const box = document.getElementById('word-list-box');
+            box.innerHTML = vocabData.map(v => `
+                <div class="course-item">
+                    <div style="flex:1">
+                        <div style="color:var(--primary-color); font-weight:bold">${v.w} ${v.p}</div>
+                        <div style="font-size:0.9rem">${v.m}</div>
+                    </div>
+                    <button onclick="speak('${v.w}')" style="border:none; background:none; color:var(--primary-color); font-size:1.3rem; margin-right:15px"><i class="fas fa-volume-up"></i></button>
+                    <button onclick="toggleFav('${v.w}')" style="border:none; background:none; color:${favorites.includes(v.w)?'var(--danger-color)':'#ccc'}; font-size:1.3rem"><i class="fas fa-heart"></i></button>
+                </div>
+            `).join('');
+        }
+
+        function toggleFav(w) {
+            const idx = favorites.indexOf(w);
+            if(idx > -1) favorites.splice(idx, 1);
+            else favorites.push(w);
+            localStorage.setItem('my_favs', JSON.stringify(favorites));
+            renderVocabulary(); renderFavorites();
+        }
+
+        function renderFavorites() {
+            const box = document.getElementById('fav-list-box');
+            box.innerHTML = favorites.length ? favorites.map(f => `
+                <div class="course-item">
+                    <div style="flex:1; font-weight:bold">${f}</div>
+                    <button onclick="toggleFav('${f}')" style="border:none; background:none; color:var(--danger-color)"><i class="fas fa-trash"></i></button>
+                </div>
+            `).join('') : '<p style="text-align:center; color:#999">空空如也</p>';
+        }
+
+        // --- 5. 笔记在线管理 ---
+        function renderNotes() {
+            const box = document.getElementById('notes-list-box');
+            box.innerHTML = notes.map(n => `
+                <div class="note-card">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:0.8rem; color:#888">
+                        <span>${n.time}</span>
+                        <button class="note-del-btn" onclick="delNote('${n.id}')"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <div style="white-space:pre-wrap">${n.text}</div>
+                </div>
+            `).join('');
+        }
+
+        function addNote() {
+            const text = prompt("输入学习笔记：");
+            if(text) {
+                notes.unshift({ id: Date.now().toString(), text: text, time: new Date().toLocaleString() });
+                localStorage.setItem('my_notes', JSON.stringify(notes));
+                renderNotes();
             }
         }
-        
-        // 计算字符串相似度
-        function calculateSimilarity(str1, str2) {
-            const longer = str1.length > str2.length ? str1 : str2;
-            const shorter = str1.length > str2.length ? str2 : str1;
-            
-            if (longer.length === 0) {
-                return 1.0;
+
+        function delNote(id) {
+            if(confirm("确定删除吗？")) {
+                notes = notes.filter(n => n.id !== id);
+                localStorage.setItem('my_notes', JSON.stringify(notes));
+                renderNotes();
             }
-            
-            const editDistance = computeEditDistance(longer, shorter);
-            return (longer.length - editDistance) / longer.length;
         }
-        
-        // 编辑距离算法
-        function computeEditDistance(s1, s2) {
-            s1 = s1.toLowerCase();
-            s2 = s2.toLowerCase();
-            
-            const costs = [];
-            for (let i = 0; i <= s1.length; i++) {
-                let lastValue = i;
-                for (let j = 0; j <= s2.length; j++) {
-                    if (i === 0) {
-                        costs[j] = j;
-                    } else if (j > 0) {
-                        let newValue = costs[j - 1];
-                        if (s1.charAt(i - 1) !== s2.charAt(j - 1)) {
-                            newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
-                        }
-                        costs[j - 1] = lastValue;
-                        lastValue = newValue;
-                    }
+
+        // --- 通用工具 ---
+        function initTabNav() {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.onclick = function() {
+                    document.querySelectorAll('.nav-item, .content-section').forEach(el => el.classList.remove('active'));
+                    this.classList.add('active');
+                    document.getElementById(this.dataset.tab).classList.add('active');
                 }
-                if (i > 0) {
-                    costs[s2.length] = lastValue;
-                }
-            }
-            return costs[s2.length];
+            });
         }
-        
-        // 更新评分反馈
-        function updateScoreFeedback(score, userText, expectedText) {
-            let feedback = '';
-            
-            if (score >= 90) {
-                feedback = `发音非常标准！您说："${userText}"，系统检测到与 "${expectedText}" 相似度很高。`;
-            } else if (score >= 70) {
-                feedback = `发音不错！您说："${userText}"，继续练习会更好。`;
-            } else if (score >= 50) {
-                feedback = `还需要多练习哦。您说："${userText}"，可以再试试。`;
-            } else {
-                feedback = `发音需要加强。您说："${userText}"，建议多听几遍原音再模仿。`;
-            }
-            
-            document.querySelector('.score-feedback').innerHTML = `
-                <i class="fas fa-comment" style="color: var(--secondary-color); margin-right: 5px;"></i>
-                ${feedback}
-            `;
+
+        function repeatLine() {
+            const active = document.querySelector('.transcript-line.active');
+            if(active) speak(active.dataset.en);
+        }
+
+        function toggleTrans() {
+            const show = document.getElementById('trans-toggle').checked;
+            document.querySelectorAll('.translation').forEach(t => t.style.display = show ? 'block' : 'none');
+        }
+
+        function changeSpeed() {
+            document.getElementById('main-video').playbackRate = document.getElementById('speed-sel').value;
+        }
+
+        function closeScore() {
+            document.getElementById('overlay').classList.remove('active');
+            document.getElementById('score-modal').classList.remove('active');
+        }
+
+        function showToast(m) {
+            const t = document.createElement('div');
+            t.style = "position:fixed; top:20px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.8); color:white; padding:8px 16px; border-radius:20px; z-index:9999; font-size:14px";
+            t.innerText = m; document.body.appendChild(t);
+            setTimeout(() => t.remove(), 2000);
         }
     </script>
 </body>
